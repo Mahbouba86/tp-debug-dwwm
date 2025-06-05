@@ -7,7 +7,7 @@
         <img src={{ asset('media/images/default.png') }} alt="{{ app.user.username ?? 'Non renseigné' }}" class="h-20 rounded-full shadow hover:-translate-y-1 transform transition-all ease-in-out duration-300">
         <div class="">
             <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-emerald-900">
-                {{ app.user.usernam ?? 'Non renseigné' }}
+                {{ app.user.username ?? 'Non renseigné' }}
             </h1>
             <p class="text-xs text-neutral-500">Membre depuis {{ app.user.createdAt|time_diff }}</p>
 
