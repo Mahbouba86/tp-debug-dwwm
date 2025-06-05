@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+
 
 final class TodoController extends AbstractController
 {
@@ -24,7 +26,7 @@ final class TodoController extends AbstractController
             'todos' => $this->tr->findByCreator($this->getUser()),
         ]);
     }
-    
+
     #[Route('/todos/add', name: 'todos_add', methods: ['GET', 'POST'])]
     public function add(Request $request): Response
     {
@@ -47,9 +49,10 @@ final class TodoController extends AbstractController
             'pageSubtitle' => 'Créons une nouvelle liste de chose à faire',
         ]);
     }
-    
+
+
     #[Route('/todos/edit/{ref}', name: 'todos_edit', methods: ['GET', 'POST'])]
-    public function edit(string $ref): Response
+    public function edit(Request $request, string $ref): Response
     {
         $todo = $this->tr->findOneByRef($ref);
 
@@ -75,7 +78,7 @@ final class TodoController extends AbstractController
             'pageSubtitle' => 'Ajustons un peu les choses à faire',
         ]);
     }
-    
+
     #[Route('/todos/{ref}', name: 'todos_show', methods: ['GET'])]
     public function show(string $ref): Response
     {
@@ -98,6 +101,6 @@ final class TodoController extends AbstractController
             $this->addFlash('danger', 'Cette tâche ne vous appartient pas');
         }
 
-        return $this->redirectToRoute('todos');
+        return $this->redirectToRoute('todos_index');
     }
 }

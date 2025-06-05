@@ -9,13 +9,13 @@ use App\Entity\Todo;
 use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use SebastianBergmann\CodeCoverage\Report\PHP;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+// use SebastianBergmann\CodeCoverage\Report\PHP;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
     public function __construct(
-        private UserPasswordHasher $hasher
+        private readonly UserPasswordHasherInterface $hasher
     )
     {
         
@@ -79,7 +79,7 @@ class AppFixtures extends Fixture
         $admin
             ->setEmail('admin@admin.com')
             ->setUsername('admin')
-            ->setPassword($this->hasher->hashPassword($user, 'admin123'))
+            ->setPassword($this->hasher->hashPassword($admin, 'admin123'))
             ->setRoles(['ROLE_ADMIN'])
             ->setIsMajor(true)
             ->setIsTerms(true)
@@ -105,6 +105,8 @@ class AppFixtures extends Fixture
             ;
 
             $manager->persist($user);
+
+
             array_push($users, $user);
 
             // Création des réseaux de l'utilisateur (doublon possible mais pas bloquant)
@@ -118,6 +120,8 @@ class AppFixtures extends Fixture
                     ;
 
                 $manager->persist($net);
+
+
             }
 
             echo $user->getUsername()."\n" . PHP_EOL;
@@ -148,6 +152,6 @@ class AppFixtures extends Fixture
             echo $todo->getName()."\n" . PHP_EOL;
         }
 
-        // $manager->flush();
+         $manager->flush();
     }
 }
